@@ -48,7 +48,7 @@ app.factory('postService', function($resource){
 });
 
 app.factory('userService', function($resource){
-  return $resource('/user/:id', null,
+  return $resource('/api/users/:id', null,
                   {
       'update':{method:'PUT'}
   });
@@ -108,7 +108,7 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
 
 app.controller('userSettingController', function($location, $rootScope, $scope, userService){
 	if($rootScope.editedUser === undefined){
-        $location.path('/user');
+        $location.path('/');
     }
     $scope.user = $rootScope.editedUser;
     $scope.user.password = '';
@@ -122,12 +122,12 @@ app.controller('userSettingController', function($location, $rootScope, $scope, 
             $scope.error_message = data.message;
           }
           else{
-               $location.path('user'); 
+               $location.path('/'); 
           }           
         });
     };
     
     $scope.cancelEditing = function(){
-         $location.path('user'); 
+         $location.path('/'); 
     }
 });
