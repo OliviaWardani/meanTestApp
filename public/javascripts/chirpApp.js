@@ -1,11 +1,13 @@
 var app = angular.module('chirpApp', ['ngRoute', 'ngResource']).run(function($rootScope, $http) {
 	$rootScope.authenticated = false;
 	$rootScope.current_user = '';
+	$rootScope.editedUser = '';
 	
 	$rootScope.signout = function(){
     	$http.get('auth/signout');
     	$rootScope.authenticated = false;
     	$rootScope.current_user = '';
+		$rootScope.editedUser = '';
 	};
 });
 
@@ -27,7 +29,7 @@ app.config(function($routeProvider){
 			controller: 'authController'
 		})
 		//the user setting display
-		.when('/userSetting', {
+		.when('/user/update', {
 			templateUrl: 'userSetting.html',
 			controller: 'userSettingController'
 		})
@@ -37,8 +39,11 @@ app.factory('postService', function($resource){
 	return $resource('/api/posts/:id');
 });
 
-app.factory('userService', function($resource){
-	return $resource('/api/users/:id');
+app.factory('changePasswordUserService', function($resource){
+  return $resource('/user/changePassword/:id', null,
+                  {
+      'update':{method:'PUT'}
+  });
 });
 
 app.controller('mainController', function(postService, $scope, $rootScope){
@@ -70,6 +75,7 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
       if(data.state == 'success'){
         $rootScope.authenticated = true;
         $rootScope.current_user = data.user.username;
+        $rootScope.editedUser = user;
         $location.path('/');
       }
       else{
@@ -92,6 +98,30 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
   };
 });
 
-app.controller('userSettingController', function(userService, $scope, $rootScope){
-	$scope.users = userService.query();
+app.controller('userSettingController', function($location, $rootScope, $scope, changePasswordUserService){
+	if($rootScope.editedUser === undefined){
+        $location.path('/user');
+    }
+    $scope.user = $rootScope.editedUser;
+    $scope.user.password = '';
+    
+    $scope.save = function (user){ 
+        var userName = user.username;
+        
+         changePasswordUserService.update({ id: user._id }, user,function(data) {
+         if(data.state == 'failure'){
+            $scope.user.username = userName;
+            $scope.error_message = data.message;
+          }
+          else{
+               $location.path('user'); 
+
+          }  
+         
+        });
+    };
+    
+    $scope.cancelEditing = function(){
+         $location.path('user'); 
+    }
 });
