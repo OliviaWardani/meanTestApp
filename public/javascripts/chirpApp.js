@@ -36,6 +36,11 @@ app.config(function($routeProvider){
 			templateUrl: 'register.html',
 			controller: 'authController'
 		})
+		//the administrator display
+		.when('/user', {
+			templateUrl: 'administrator.html',
+			controller: 'administratorController'
+		});
 		//the user setting display
 		.when('/user/update', {
 			templateUrl: 'userSetting.html',
@@ -49,13 +54,6 @@ app.factory('postService', function($resource){
 
 app.factory('userService', function($resource){
   return $resource('/user/:id', null,
-                  {
-      'update':{method:'PUT'}
-  });
-});
-
-app.factory('changePasswordService', function($resource){
-  return $resource('/user/changePassword/:id', null,
                   {
       'update':{method:'PUT'}
   });
@@ -113,7 +111,7 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
   };
 });
 
-app.controller('userSettingController', function($location, $rootScope, $scope, changePasswordService){
+app.controller('userSettingController', function($location, $rootScope, $scope, userService){
 	if($rootScope.editedUser === undefined){
         $location.path('/');
     }
@@ -123,7 +121,7 @@ app.controller('userSettingController', function($location, $rootScope, $scope, 
     $scope.save = function (user){ 
         var userName = user.username;
         
-         changePasswordService.update({ id: user._id }, user,function(data) {
+         userService.update({ id: user._id }, user,function(data) {
          if(data.state == 'failure'){
             $scope.user.username = userName;
             $scope.error_message = data.message;
@@ -137,4 +135,19 @@ app.controller('userSettingController', function($location, $rootScope, $scope, 
     $scope.cancelEditing = function(){
          $location.path('/'); 
     }
+});
+
+app.controller('administratorController', function($location, $rootScope, $scope, userService){
+    
+     if($rootScope.authenticated == false){
+          $location.path('login');    
+     }
+    
+    $scope.users = userService.query();
+    
+    $scope.deleteUser = function(user){       
+       userService.delete({ id: user._id }, function() {
+           $scope.users = userService.query();
+        });
+    } 
 });

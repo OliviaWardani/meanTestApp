@@ -76,28 +76,7 @@ router.route('/:id')
                 });
                 
             });
-        });
-
-router.route('/changePassword/:id')
-    .put(function(req, res) {
-           User.findById(req.param('id'), function(err, user){            
-                console.log(user.password);
-                if (!isValidPassword(user, req.body.password)){
-                            console.log('Invalid Password');
-                            res.send({state: 'failure', user:user, message: "Invalid username or password"});
-                }          
-                else{
-                    user.username = req.body.username;
-                    user.password = createHash(req.body.newPassword);               
-                    user.save(function(err, user){
-                        if(err)
-                            res.send(err);
-
-                        res.json(user);
-                    });
-                }
-            });
-    });   
+        }); 
 
     var isValidPassword = function(user, password){
         return bCrypt.compareSync(password, user.password);
