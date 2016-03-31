@@ -40,7 +40,7 @@ app.config(function($routeProvider){
 		.when('/user', {
 			templateUrl: 'administrator.html',
 			controller: 'administratorController'
-		});
+		})
 		//the user setting display
 		.when('/user/update', {
 			templateUrl: 'userSetting.html',
