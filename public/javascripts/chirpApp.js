@@ -1,7 +1,15 @@
 var app = angular.module('chirpApp', ['ngRoute', 'ngResource']).run(function($rootScope, $http) {
-	$rootScope.authenticated = false;
-	$rootScope.current_user = '';
-	$rootScope.editedUser = '';
+	
+  $http.get("auth/getUser").then(function(result) {     
+      if(result.data != ''){
+          $rootScope.authenticated = true;
+          $rootScope.current_user = result.data.username;
+      }else{
+          $rootScope.authenticated = false;
+          $rootScope.current_user = '';
+      }
+     $scope.currentUser = result.data;
+  })
 	
 	$rootScope.signout = function(){
     	$http.get('auth/signout');
@@ -108,7 +116,7 @@ app.controller('userSettingController', function($location, $rootScope, $scope, 
     $scope.save = function (user){ 
         var userName = user.username;
         
-         changePasswordUserService.update({ id: user._id }, user,function(data) {
+         userService.update({ id: user._id }, user,function(data) {
          if(data.state == 'failure'){
             $scope.user.username = userName;
             $scope.error_message = data.message;
