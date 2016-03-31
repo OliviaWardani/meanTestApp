@@ -25,11 +25,20 @@ app.config(function($routeProvider){
 		.when('/register', {
 			templateUrl: 'register.html',
 			controller: 'authController'
-		});
+		})
+		//the user setting display
+		.when('/userSetting', {
+			templateUrl: 'userSetting.html',
+			controller: 'userSettingController'
+		})
 });
 
 app.factory('postService', function($resource){
 	return $resource('/api/posts/:id');
+});
+
+app.factory('userService', function($resource){
+	return $resource('/api/users/:id');
 });
 
 app.controller('mainController', function(postService, $scope, $rootScope){
@@ -81,4 +90,8 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
       }
     });
   };
+});
+
+app.controller('userSettingController', function(userService, $scope, $rootScope){
+	$scope.users = userService.query();
 });
