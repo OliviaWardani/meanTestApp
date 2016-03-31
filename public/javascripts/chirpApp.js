@@ -32,7 +32,7 @@ app.config(function($routeProvider){
 		.when('/user/update', {
 			templateUrl: 'userSetting.html',
 			controller: 'userSettingController'
-		})
+		});
 });
 
 app.factory('postService', function($resource){
@@ -115,9 +115,7 @@ app.controller('userSettingController', function($location, $rootScope, $scope, 
           }
           else{
                $location.path('user'); 
-
-          }  
-         
+          }           
         });
     };
     
