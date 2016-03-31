@@ -8,7 +8,7 @@ var app = angular.module('chirpApp', ['ngRoute', 'ngResource']).run(function($ro
           $rootScope.authenticated = false;
           $rootScope.current_user = '';
       }
-     $scope.currentUser = result.data;
+     $rootScope.currentUser = result.data;
   })
 	
 	$rootScope.signout = function(){
@@ -83,7 +83,7 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
       if(data.state == 'success'){
         $rootScope.authenticated = true;
         $rootScope.current_user = data.user.username;
-        $rootScope.editedUser = user;
+        $rootScope.editedUser = data.user;
         $location.path('/');
       }
       else{
