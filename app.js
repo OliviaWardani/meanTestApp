@@ -11,7 +11,7 @@ require('./models/models');
 var index = require('./routes/index');
 var api = require('./routes/api');
 var authenticate = require('./routes/authenticate')(passport);
-//var userapi = require('./routes/userapi');
+var userapi = require('./routes/userapi');
 
 var mongoose = require('mongoose');                         //add for Mongo support
 mongoose.connect('mongodb://olivia_w:Password2015@ds028559.mlab.com:28559/test-chirp');
@@ -37,7 +37,7 @@ app.use(passport.session());
 app.use('/', index);
 app.use('/auth', authenticate);
 app.use('/api', api);
-//app.use('/user', userapi);
+app.use('/user', userapi);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
