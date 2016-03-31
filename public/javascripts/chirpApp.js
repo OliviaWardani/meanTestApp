@@ -39,8 +39,8 @@ app.factory('postService', function($resource){
 	return $resource('/api/posts/:id');
 });
 
-app.factory('changePasswordUserService', function($resource){
-  return $resource('/user/changePassword/:id', null,
+app.factory('userService', function($resource){
+  return $resource('/user/:id', null,
                   {
       'update':{method:'PUT'}
   });
@@ -98,7 +98,7 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
   };
 });
 
-app.controller('userSettingController', function($location, $rootScope, $scope, changePasswordUserService){
+app.controller('userSettingController', function($location, $rootScope, $scope, userService){
 	if($rootScope.editedUser === undefined){
         $location.path('/user');
     }
