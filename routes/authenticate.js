@@ -35,7 +35,6 @@ module.exports = function(passport){
     //gets specified post
     .get(function(req, res){       
        res.send(req.user);
-
     });
 
 	return router;
