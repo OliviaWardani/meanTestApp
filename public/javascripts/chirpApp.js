@@ -100,9 +100,9 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
   $scope.login = function(){
     $http.post('/auth/login', $scope.user).success(function(data){
       if(data.state == 'success'){
+        $rootScope.loggedUser = data.user;
         $rootScope.authenticated = true;
         $rootScope.current_user = data.user.username;
-        $rootScope.loggedUser = data.user;
         if (data.user.isadmin == 'yes') {
         	$rootScope.isadmin = true;
         }
