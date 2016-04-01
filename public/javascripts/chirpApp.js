@@ -45,6 +45,10 @@ app.config(function($routeProvider){
 		.when('/user/update', {
 			templateUrl: 'userSetting.html',
 			controller: 'userSettingController'
+		})
+        .when('/user/editProfile', {
+			templateUrl: 'editProfile.html',
+			controller: 'editProfileController'
 		});
 });
 
@@ -157,4 +161,38 @@ app.controller('administratorController', function($location, $rootScope, $scope
            $scope.users = userService.query();
         });
     } 
+    
+    $scope.updateProfile = function(user){  
+        $rootScope.editedUser = user;
+        $location.path('user/editProfile');     
+    } 
+});
+
+app.controller('editProfileController', function($location, $rootScope, $scope, userService){
+    
+    if($rootScope.editedUser === undefined){
+        $location.path('/user');
+    }
+    $scope.user = $rootScope.editedUser;
+    $scope.user.password = '';
+    
+    $scope.save = function (user){ 
+        var userName = user.username;
+        
+         userService.update({ id: user._id }, user,function(data) {
+         if(data.state == 'failure'){
+            $scope.user.username = userName;
+            $scope.error_message = data.message;
+          }
+          else{
+               $location.path('user'); 
+
+          }           
+        });
+    };
+    
+    $scope.cancelEditing = function(){
+         $location.path('user'); 
+    }
+
 });

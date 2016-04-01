@@ -65,9 +65,9 @@ router.route('/:id')
            User.findById(req.param('id'), function(err, user){            
                 
                 user.username = req.body.username;
+                user.password = createHash(req.body.newPassword); 
                 user.name = req.body.name;
-                user.email = req.body.email;
-                user.password = createHash(req.body.newPassword);               
+                user.email = req.body.email;              
                 user.save(function(err, user){
                     if(err)
                         res.send(err);
