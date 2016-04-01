@@ -7,6 +7,7 @@ var app = angular.module('chirpApp', ['ngRoute', 'ngResource']).run(function($ro
       }else{
           $rootScope.authenticated = false;
           $rootScope.current_user = '';
+          $rootScope.isadmin = false;
       }
      $rootScope.currentUser = result.data;
   })
@@ -16,6 +17,7 @@ var app = angular.module('chirpApp', ['ngRoute', 'ngResource']).run(function($ro
     	$rootScope.authenticated = false;
     	$rootScope.current_user = '';
 		$rootScope.editedUser = '';
+        $rootScope.isadmin = false;
 	};
 });
 
@@ -100,6 +102,9 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
         $rootScope.authenticated = true;
         $rootScope.current_user = data.user.username;
         $rootScope.editedUser = data.user;
+        if (data.user.isadmin == 'yes') {
+        	$rootScope.isadmin = true;
+        }
         $location.path('/');
       }
       else{
