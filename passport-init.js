@@ -71,8 +71,7 @@ module.exports = function(passport){
 					newUser.password = createHash(password);
                     newUser.name = req.param('name');
                     newUser.email = req.param('email');
-                    var isadmin = "no";
-                    newUser.isadmin = isadmin;
+                    newUser.isadmin = 'no';
 
 					// save the user
 					newUser.save(function(err) {
