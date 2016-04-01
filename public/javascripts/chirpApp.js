@@ -101,7 +101,6 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
       if(data.state == 'success'){
         $rootScope.authenticated = true;
         $rootScope.current_user = data.user.username;
-        $rootScope.editedUser = data.user;
         if (data.user.isadmin == 'yes') {
         	$rootScope.isadmin = true;
         }
@@ -128,10 +127,10 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
 });
 
 app.controller('userSettingController', function($location, $rootScope, $scope, changePasswordService){
-	if($rootScope.editedUser === undefined){
+	if($rootScope.current_user === undefined){
         $location.path('/');
     }
-    $scope.user = $rootScope.editedUser;
+    $scope.user = $rootScope.current_user;
     $scope.user.password = '';
     
     $scope.save = function (user){ 
