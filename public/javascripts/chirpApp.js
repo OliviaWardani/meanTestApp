@@ -162,7 +162,7 @@ app.controller('administratorController', function($location, $rootScope, $scope
         });
     } 
     
-    $scope.updateProfile = function(user){  
+    $scope.editProfile = function(user){  
         $rootScope.editedUser = user;
         $location.path('user/editProfile');     
     } 
