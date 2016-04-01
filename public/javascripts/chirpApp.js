@@ -132,7 +132,7 @@ app.controller('userSettingController', function($location, $rootScope, $scope, 
         $location.path('/');
     }
     $scope.user = $rootScope.editedUser;
-    $scope.user.password = '';
+    //$scope.user.password = '';
     
     $scope.save = function (user){ 
         var userName = user.username;
