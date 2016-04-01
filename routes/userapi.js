@@ -67,7 +67,8 @@ router.route('/:id')
                 user.username = req.body.username;
                 user.password = createHash(req.body.newPassword); 
                 user.name = req.body.name;
-                user.email = req.body.email;              
+                user.email = req.body.email; 
+                user.isadmin = req.body.isadmin;              
                 user.save(function(err, user){
                     if(err)
                         res.send(err);
