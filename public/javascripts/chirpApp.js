@@ -59,6 +59,13 @@ app.factory('userService', function($resource){
   });
 });
 
+app.factory('changePasswordService', function($resource){
+  return $resource('/user/changePassword/:id', null,
+                  {
+      'update':{method:'PUT'}
+  });
+});
+
 app.controller('mainController', function(postService, $scope, $rootScope){
 	$scope.posts = postService.query();
 	$scope.newPost = {created_by: '', text: '', created_at: ''};
@@ -111,7 +118,7 @@ app.controller('authController', function($scope, $http, $rootScope, $location){
   };
 });
 
-app.controller('userSettingController', function($location, $rootScope, $scope, userService){
+app.controller('userSettingController', function($location, $rootScope, $scope, changePasswordService){
 	if($rootScope.editedUser === undefined){
         $location.path('/');
     }
@@ -121,7 +128,7 @@ app.controller('userSettingController', function($location, $rootScope, $scope, 
     $scope.save = function (user){ 
         var userName = user.username;
         
-         userService.update({ id: user._id }, user,function(data) {
+         changePasswordService.update({ id: user._id }, user,function(data) {
          if(data.state == 'failure'){
             $scope.user.username = userName;
             $scope.error_message = data.message;
